@@ -21,6 +21,23 @@ fmtname(char *path)
   memset(buf+strlen(p), ' ', DIRSIZ-strlen(p));
   return buf;
 }
+char*
+translateMode(uint mode)
+{
+	static char cmode[9];
+	cmode[0] = (mode >> 10 & 1) != 0 ? 'r' : '-';
+	cmode[1] = (mode >> 9 & 1) != 0 ? 'w' : '-';
+	cmode[2] = (mode >> 8 & 1) != 0 ? 'x' : '-';
+	cmode[3] = (mode >> 6 & 1) != 0 ? 'r' : '-';
+	cmode[4] = (mode >> 5 & 1) != 0 ? 'w' : '-';
+	cmode[5] = (mode >> 4 & 1) != 0 ? 'x' : '-';
+	cmode[6] = (mode >> 2 & 1) != 0 ? 'r' : '-';
+	cmode[7] = (mode >> 1 & 1) != 0 ? 'w' : '-';
+	cmode[8] = (mode & 1) != 0 ? 'x' : '-';
+
+	return cmode;
+}
+
 
 void
 ls(char *path)
@@ -65,7 +82,7 @@ ls(char *path)
         continue;
       }
 
-      printf(1, "%s %d %d %d %d %d %d\n", fmtname(buf), st.type, st.ino, st.size,st.mode, st.ownerId, st.groupId);
+      printf(1, "%s %d %d %d %x %s %d %d\n", fmtname(buf), st.type, st.ino, st.size,st.mode,translateMode(st.mode), st.ownerId, st.groupId);
     }
     break;
   }

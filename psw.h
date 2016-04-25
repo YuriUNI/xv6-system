@@ -6,4 +6,6 @@ struct psw {
 	char username[MAXNAME];
 	uint uid;
 	char password[MAXNAME];
+	uint gid;
+	char groupname[MAXNAME];
 };

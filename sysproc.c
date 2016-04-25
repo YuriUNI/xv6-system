@@ -57,6 +57,21 @@ sys_getuid(void)
   return (int) proc->curUserId;
 }
 
+int
+sys_getgid(void)
+{
+  return (int) proc->groupId;
+}
+int
+sys_setgid(void)
+{
+	int id;
+	if(argint(0, &id) < 0)
+	    return -1;
+  return proc->groupId=id;
+}
+
+
 
 int
 sys_sbrk(void)

@@ -15,6 +15,7 @@
 #include "fcntl.h"
 #include "spinlock.h"
 
+
 //#include "user.h"
 // Fetch the nth word-sized system call argument as a file descriptor
 // and return both the descriptor and the corresponding struct file.
@@ -323,6 +324,7 @@ create(char *path, short type, short major, short minor,short curUser)
   ip->minor = minor;
   ip->nlink = 1;
   ip->ownerId = curUser;
+  ip->mode = 0x755;
   iupdate(ip);
 
   if(type == T_DIR){  // Create . and .. entries.
@@ -340,6 +342,7 @@ create(char *path, short type, short major, short minor,short curUser)
 
   return ip;
 }
+extern int permissionCheck(struct inode*);
 
 int
 sys_open(void)
@@ -360,13 +363,15 @@ sys_open(void)
       end_op();
       return -1;
     }
+    //mode init
+    ip->mode = 0x0755;
   } else {
     if((ip = namei(path)) == 0){
       end_op();
       return -1;
     }
     ilock(ip);
-    if(ip->type == T_DIR && omode != O_RDONLY){
+    if(ip->type == T_DIR && omode != O_RDONLY ){
       iunlockput(ip);
       end_op();
       return -1;
@@ -382,12 +387,14 @@ sys_open(void)
   }
   iunlock(ip);
   end_op();
+  //Permission Check
 
   f->type = FD_INODE;
   f->ip = ip;
   f->off = 0;
-  f->readable = !(omode & O_WRONLY);
-  f->writable = (omode & O_WRONLY) || (omode & O_RDWR);
+
+  f->readable = !(omode & O_WRONLY) && ((permissionCheck(ip) >> 2 & 1) != 0 || sys_getuid()  == 0);
+  f->writable = ((omode & O_WRONLY) || (omode & O_RDWR)) && ((permissionCheck(ip) >> 1 & 1) != 0 || sys_getuid() == 0);
   return fd;
 }
 

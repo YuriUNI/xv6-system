@@ -24,15 +24,19 @@
 
         int mode = st.mode;
 
+
         char *c = argv[1];
         if(strlen(c)<3){
         	printf(2, "mode should be 3 digit");
         }
-        if(c[1]<'0'||c[1]>'9'||c[2]<'0'||c[2]>'9'||c[3]<'0'||c[3]>'9'){
-        	printf(2,"mode should be number");
+        if(c[0]<'0'||c[0]>'9'||c[1]<'0'||c[1]>'9'||c[2]<'0'||c[2]>'9'){
+        	printf(2,"mode should be number %s",c);
         }
-
-        chmod(path, 0x100 ^ mode);
         close(fd);
+        //printf(1,"%x\n",st.mode);
+        mode = (c[0] - '0') * 256 + (c[1] - '0') * 16 + c[2] - '0';
+        //printf(1,"change to %x\n",mode);
+        chmod(path, mode);
+
         exit();
     }

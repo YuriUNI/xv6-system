@@ -178,7 +178,9 @@ UPROGS=\
 	_touch\
 	_adduser\
 	_fsck\
-	_tree
+	_tree\
+	_passwd\
+	_addgroup\
 
 
 fs.img: mkfs README $(UPROGS)

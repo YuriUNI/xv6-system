@@ -109,6 +109,8 @@ extern int sys_isdir(void);
 extern int sys_read2(void);
 extern int sys_getinode(void);
 extern int sys_tree(void);
+extern int sys_getgid(void);
+extern int sys_setgid(void);
 
 
 static int (*syscalls[])(void) = {
@@ -144,6 +146,8 @@ static int (*syscalls[])(void) = {
 [SYS_read2]  sys_read2,
 [SYS_getinode]  sys_getinode,
 [SYS_tree]  sys_tree,
+[SYS_getgid]  sys_getgid,
+[SYS_setgid]  sys_setgid,
 
 };
 

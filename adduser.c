@@ -13,9 +13,11 @@
         }
         char* user =argv[1];
         char* pwd =argv[2];
+        char* group= argv[1];
         struct psw t;
     	strcpy(t.username,user);
     	strcpy(t.password,pwd);
+    	strcpy(t.groupname,group);
         char *path = "/psw";
         int uid=0;
         int fd =open(path, O_RDWR);

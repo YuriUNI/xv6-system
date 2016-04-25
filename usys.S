@@ -40,6 +40,9 @@ SYSCALL(isdir)
 SYSCALL(read2)
 SYSCALL(getinode)
 SYSCALL(tree)
+SYSCALL(getgid)
+SYSCALL(setgid)
+
 
 
 

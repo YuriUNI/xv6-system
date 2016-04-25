@@ -31,3 +31,6 @@
 #define SYS_read2   30
 #define SYS_getinode  31
 #define SYS_tree  32
+#define SYS_getgid  33
+#define SYS_setgid  34
+

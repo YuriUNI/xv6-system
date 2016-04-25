@@ -55,12 +55,13 @@ int getuserid(char *usr,char *pwd){
 	return 0;
 }
 
-void save(char *usr, char *pwd, uint uid) {
+void save(char *usr, char *pwd, uint uid, uint gid) {
 	int fd;
 	struct psw t;
 	strcpy(t.username,usr);
 	strcpy(t.password,pwd);
 	t.uid = uid;
+	t.gid = gid;
 	fd = open("/psw", O_CREATE | O_RDWR);
 	if (fd<0){
 		printf(1, "error: create psw file failed\n");
@@ -104,7 +105,9 @@ main(void)
   printf(1,"Set up root password:");
   getpwd(pwd, sizeof(pwd));
   pwd[strlen(pwd) - 1] = '\0';
-  save(user, pwd,0);
+  uint uid=0;
+  uint gid=100;
+  save(user, pwd, uid,gid);
 
   for(;;){
 	int verify=0;

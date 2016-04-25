@@ -23,6 +23,7 @@
 #define min(a, b) ((a) < (b) ? (a) : (b))
 static void itrunc(struct inode*);
 struct superblock sb;   // there should be one per dev, but we run with one dev
+extern int sys_getuid(void);
 
 // Read the super block.
 void
@@ -211,6 +212,8 @@ iupdate(struct inode *ip)
   dip->groupId = ip->groupId;
   dip->nlink = ip->nlink;
   dip->size = ip->size;
+  dip->mode = ip->mode;
+
   memmove(dip->addrs, ip->addrs, sizeof(ip->addrs));
   log_write(bp);
   brelse(bp);
@@ -288,8 +291,12 @@ ilock(struct inode *ip)
     ip->minor = dip->minor;
     ip->nlink = dip->nlink;
     ip->size = dip->size;
+
+    // Read ownership permissions into memory
     ip->ownerId = dip->ownerId;
     ip->groupId = dip->groupId;
+    ip->mode = dip->mode;
+
     memmove(ip->addrs, dip->addrs, sizeof(ip->addrs));
     brelse(bp);
     ip->flags |= I_VALID;
@@ -433,6 +440,7 @@ stati(struct inode *ip, struct stat *st)
   st->size = ip->size;
   st->ownerId = ip->ownerId;
   st->groupId = ip->groupId;
+  st->mode = ip->mode;
 }
 
 //PAGEBREAK!
@@ -609,6 +617,17 @@ skipelem(char *path, char *name)
 // If parent != 0, return the inode for the parent and copy the final
 // path element into name, which must have room for DIRSIZ bytes.
 // Must be called inside a transaction since it calls iput().
+int permissionCheck(struct inode *ip){
+	int uid = sys_getuid();
+	if(ip->ownerId == uid){
+		return ip->mode>>8;
+	}else{
+		return ip->mode;
+	}
+	return 0;
+}
+
+
 static struct inode*
 namex(char *path, int nameiparent, char *name)
 {
@@ -621,6 +640,11 @@ namex(char *path, int nameiparent, char *name)
 
   while((path = skipelem(path, name)) != 0){
     ilock(ip);
+    //Permission Checking
+    if((permissionCheck(ip) & 1) == 0&&sys_getuid() != 0){
+    	panic("no traverse permission");
+    	return 0;
+    }
     if(ip->type != T_DIR){
       iunlockput(ip);
       return 0;
