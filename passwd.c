@@ -7,8 +7,8 @@
     int
     main(int argc, char *argv[])
     {
-        if(argc < 3){
-        	printf(2,"Usage: adduser <username> <password>");
+        if(argc < 2){
+        	printf(2,"Usage: passwd <username>");
         	exit();
         }
         char* user =argv[1];
