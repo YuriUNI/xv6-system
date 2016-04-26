@@ -25,15 +25,15 @@
         int bytes;
         while((bytes=read(fd, &tmp, sizeof(tmp))) != 0){
         	if(!strcmp(tmp.username,t.username)){
-        		printf(2,"error: %d is already exist", t.username);
-        		return -1;
+        		printf(2,"error: the user is already exist");
+        		exit();
         	}
         	uid++;
         }
         t.uid=uid;
         if((bytes=write(fd, &t, sizeof(t))!=sizeof(t))){
         	printf(2,"error: adduser fail");
-        	return -1;
+    		exit();
         }
 
         close(fd);

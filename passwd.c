@@ -9,7 +9,7 @@
     main(int argc, char *argv[])
     {
         if(argc < 2){
-        	printf(2,"Usage: passwd <username> ");
+        	printf(2,"Usage: passwd <username>\n");
         	exit();
         }
         char *user =argv[1];

@@ -24,7 +24,6 @@
 
         int mode = st.mode;
 
-
         char *c = argv[1];
         if(strlen(c)<3){
         	printf(2, "mode should be 3 digit");
@@ -37,6 +36,5 @@
         mode = (c[0] - '0') * 256 + (c[1] - '0') * 16 + c[2] - '0';
         //printf(1,"change to %x\n",mode);
         chmod(path, mode);
-
         exit();
     }
