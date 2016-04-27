@@ -68,6 +68,8 @@ struct proc {
   char name[16];               // Process name (debugging)
   short curUserId;
   short groupId;
+  char username[16];
+  char groupname[16];
 };
 
 // Process memory is laid out contiguously, low addresses first:

@@ -20,28 +20,32 @@
         int fd =open(path, O_RDWR);
         struct psw t;
         int count=0;
-        while((read(fd, &t, sizeof(t))) != 0){
+        while(read(fd, &t, sizeof(t))!= 0){
+        	count++;
         	if(!strcmp(t.username,user)){
         		break;
         	}
-        	count++;
         }
         count--;
         close(fd);
 
         fd =open(path, O_RDWR);
+        printf(1,"New Password:");
         gets(pwd,MAXLENGTH);
-        while((read(fd, &t, sizeof(t))) != 0){
+        pwd[strlen(pwd)-1]='\0';
+        struct psw tmp;
+        while(read(fd, &tmp, sizeof(tmp)) != 0){
             count--;
             if(count==0){
             	strcpy(t.password,pwd);
             	if((write(fd, &t, sizeof(t))!=sizeof(t))){
-            	      printf(2,"error: change passwd fail");
-            	      return -1;
+            	      printf(2,"error: change passwd fail\n");
+            	      exit();
             	}
             	break;
             }
         }
         close(fd);
+        printf(1,"New Password Set Sucessfully\n");
         exit();
     }

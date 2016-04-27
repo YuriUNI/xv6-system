@@ -72,6 +72,47 @@ sys_setgid(void)
 }
 
 
+int
+sys_setgroupname(void)
+{
+	char *gname;
+	int i = 0;
+	if(argstr(0, &gname) < 0)
+	    return -1;
+	  while(*(gname + i) !='\0'){
+		  *(proc->groupname+i) = *(gname + i);
+		  i++;
+	  }
+  return 0;
+}
+
+int
+sys_setusername(void)
+{
+	char *uname;
+	int i=0;
+	if(argstr(0, &uname) < 0)
+	    return -1;
+	while(*(uname+i)!='\0'){
+		*(proc->username+i)=*(uname + i);
+		i++;
+  	}
+  return 0;
+}
+char*
+sys_getgroupname(void)
+{
+
+  return proc->groupname;
+
+}
+
+char*
+sys_getusername(void)
+{
+
+  return proc->username;
+}
 
 int
 sys_sbrk(void)

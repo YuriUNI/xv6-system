@@ -177,8 +177,6 @@ UPROGS=\
 	_shutdown\
 	_touch\
 	_adduser\
-	_fsck\
-	_tree\
 	_passwd\
 	_addgroup\
 

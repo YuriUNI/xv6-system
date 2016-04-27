@@ -34,7 +34,11 @@ int isdir(char*);
 int read2(int, void*,int,int);
 struct inode getinode(int);
 int tree(char *);
-
+int setgid(int);
+int setusername(char *);
+int setgroupname(char *);
+char* getusername(void);
+char* getgroupname(void);
 
 
 // ulib.c

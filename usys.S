@@ -42,7 +42,10 @@ SYSCALL(getinode)
 SYSCALL(tree)
 SYSCALL(getgid)
 SYSCALL(setgid)
-
+SYSCALL(setusername)
+SYSCALL(setgroupname)
+SYSCALL(getusername)
+SYSCALL(getgroupname)
 
 
 

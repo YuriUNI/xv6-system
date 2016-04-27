@@ -33,4 +33,7 @@
 #define SYS_tree  32
 #define SYS_getgid  33
 #define SYS_setgid  34
-
+#define SYS_setusername  35
+#define SYS_setgroupname  36
+#define SYS_getusername  37
+#define SYS_getgroupname  38

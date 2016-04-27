@@ -6,7 +6,7 @@
     main(int argc, char *argv[])
     {
         if(argc < 3){
-        	printf(2,"Usage: chmod <mode> <filepath>");
+        	printf(2,"Usage: chmod <mode> <filepath>\n");
         	exit();
         }
         int fd;
@@ -26,10 +26,10 @@
 
         char *c = argv[1];
         if(strlen(c)<3){
-        	printf(2, "mode should be 3 digit");
+        	printf(2, "mode should be 3 digit\n");
         }
         if(c[0]<'0'||c[0]>'9'||c[1]<'0'||c[1]>'9'||c[2]<'0'||c[2]>'9'){
-        	printf(2,"mode should be number %s",c);
+        	printf(2,"mode should be number %s\n",c);
         }
         close(fd);
         //printf(1,"%x\n",st.mode);

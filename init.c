@@ -44,16 +44,7 @@ getpwd(char *buf, int nbuf)
   return 0;
 }
 
-int getuserid(char *usr,char *pwd){
-	struct psw t;
-	int fd = open("psw", O_RDONLY);
-	int size = sizeof(t);
-	while(read(fd, &t, size) != 0) {
-		if(!strcmp(t.password,pwd)&&!strcmp(t.username,usr))
-			return t.uid;
-	}
-	return 0;
-}
+
 
 void save(char *usr, char *pwd, uint uid, uint gid) {
 	int fd;
@@ -120,7 +111,14 @@ main(void)
 	pwd[strlen(pwd) - 1] = '\0';
 	verify= verifyuser(user,pwd);
 	}
-	int uid = getuserid(user,pwd);
+	struct psw u;
+	int fd = open("psw", O_RDONLY);
+	int size = sizeof(u);
+	while(read(fd, &u, size) != 0) {
+		if(!strcmp(u.password,pwd)&&!strcmp(u.username,user))
+			break;
+	}
+
     printf(1, "init: starting sh\n");
     pid = fork();
     if(pid < 0){
@@ -128,7 +126,10 @@ main(void)
       exit();
     }
     if(pid == 0){
-      setuid(uid);
+      setuid(u.uid);
+      setgid(u.gid);
+      setusername(u.username);
+	  setgroupname(u.groupname);
       exec("sh", argv);
       printf(1, "init: exec sh failed\n");
       exit();

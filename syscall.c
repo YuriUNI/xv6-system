@@ -111,7 +111,10 @@ extern int sys_getinode(void);
 extern int sys_tree(void);
 extern int sys_getgid(void);
 extern int sys_setgid(void);
-
+extern int sys_setgroupname(void);
+extern int sys_setusername(void);
+extern int sys_getgroupname(void);
+extern int sys_getusername(void);
 
 static int (*syscalls[])(void) = {
 [SYS_fork]    sys_fork,
@@ -148,7 +151,10 @@ static int (*syscalls[])(void) = {
 [SYS_tree]  sys_tree,
 [SYS_getgid]  sys_getgid,
 [SYS_setgid]  sys_setgid,
-
+[SYS_setusername]  sys_setusername,
+[SYS_setgroupname]  sys_setgroupname,
+[SYS_getusername]  sys_getusername,
+[SYS_getgroupname]  sys_getgroupname,
 };
 
 void
